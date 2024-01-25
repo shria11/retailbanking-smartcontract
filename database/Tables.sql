@@ -23,10 +23,10 @@ DROP TABLE IF EXISTS `authorized_address`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `authorized_address` (
-  `id` int NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
   `address` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -37,15 +37,15 @@ DROP TABLE IF EXISTS `transaction`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `transaction` (
-  `id` int NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
   `amount` varchar(45) DEFAULT NULL,
-  `timestamp` varchar(45) DEFAULT NULL,
+  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `status` enum('pending','authorized') DEFAULT NULL,
-  `user_id` int NOT NULL,
+  `user_username` varchar(45) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `fk_transaction_user_idx` (`user_id`),
-  CONSTRAINT `fk_transaction_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+  KEY `fk_transaction_user_idx` (`user_username`),
+  CONSTRAINT `fk_transaction_user` FOREIGN KEY (`user_username`) REFERENCES `user` (`username`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -56,13 +56,12 @@ DROP TABLE IF EXISTS `user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `user` (
-  `id` int NOT NULL,
-  `username` varchar(45) DEFAULT NULL,
+  `username` varchar(45) NOT NULL,
   `address` varchar(45) DEFAULT NULL,
-  `public_key` varchar(45) DEFAULT NULL,
-  `private_key` varchar(45) DEFAULT NULL,
+  `publicKey` varchar(45) DEFAULT NULL,
+  `privateKey` varchar(45) DEFAULT NULL,
   `password` varchar(100) DEFAULT NULL,
-  PRIMARY KEY (`id`),
+  PRIMARY KEY (`username`),
   UNIQUE KEY `username_UNIQUE` (`username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -84,4 +83,4 @@ CREATE TABLE `user` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-01-22 18:19:23
+-- Dump completed on 2024-01-25 19:28:53
