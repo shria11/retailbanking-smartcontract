@@ -8,33 +8,54 @@
             <CTable align="middle" class="mb-0 border" hover responsive>
               <CTableHead color="light">
                 <CTableRow>
-                  <CTableHeaderCell class="text-center">
-                    Id
-                  </CTableHeaderCell>
                   <CTableHeaderCell class="text-center">Username</CTableHeaderCell>
                   <CTableHeaderCell class="text-center"
                     >Address</CTableHeaderCell
                   >
-                  <CTableHeaderCell class="text-center"
-                    >Private Key</CTableHeaderCell
-                  >
-                  <CTableHeaderCell class="text-center">Public Key</CTableHeaderCell>
                 </CTableRow>
               </CTableHead>
               <CTableBody>
-                <CTableRow v-for="item in tableExample" :key="item.id">
-                  <CTableDataCell class="text-center">{{ item.id }}</CTableDataCell>
+                <CTableRow v-for="item in tableExample" :key="item.username">
                   <CTableDataCell class="text-center">
                     <div>{{ item.username }}</div>
                   </CTableDataCell>
                   <CTableDataCell class="text-center">
                     {{ item.address }}
                   </CTableDataCell>
+                </CTableRow>
+              </CTableBody>
+            </CTable>
+          </CCardBody>
+        </CCard>
+
+        <CCard class="mb-4">
+          <CCardHeader> Transactions </CCardHeader>
+          <CCardBody>
+            <CTable align="middle" class="mb-0 border" hover responsive>
+              <CTableHead color="light">
+                <CTableRow>
+                  <CTableHeaderCell class="text-center">Amount</CTableHeaderCell>
+                  <CTableHeaderCell class="text-center"
+                    >Timestamp</CTableHeaderCell>
+                    <CTableHeaderCell class="text-center"
+                    >Status</CTableHeaderCell>
+                    <CTableHeaderCell class="text-center"
+                    >Authorized By</CTableHeaderCell>
+                </CTableRow>
+              </CTableHead>
+              <CTableBody>
+                <CTableRow v-for="item in transactionTableExample" :key="item.timestamp">
                   <CTableDataCell class="text-center">
-                    {{ item.privateKey }}
+                    <div>{{ item.amount }}</div>
                   </CTableDataCell>
                   <CTableDataCell class="text-center">
-                    {{ item.publicKey }}
+                    {{ item.timestamp }}
+                  </CTableDataCell>
+                  <CTableDataCell class="text-center">
+                    {{ item.status }}
+                  </CTableDataCell>
+                  <CTableDataCell class="text-center">
+                    {{ item.user }}
                   </CTableDataCell>
                 </CTableRow>
               </CTableBody>
@@ -57,6 +78,7 @@ export default {
 
     return {
       tableExample:[],
+      transactionTableExample:[],
     }
    
   },
@@ -66,17 +88,30 @@ export default {
       .get('http://localhost:8082/user/')
       .then((response) => {
           if (response.status == 200) {
-            //console.log(response.data)
             this.tableExample = response.data 
-
-         console.log(  this.tableExample)
           }
         })
         .catch((error) => {
           console.log(error)
-        })}},
+        })},
+
+        loadTransactions(){ 
+      this.$axios
+      .get('http://localhost:8082/transaction/')
+      .then((response) => {
+          if (response.status == 200) {
+            this.transactionTableExample = response.data 
+          }
+        })
+        .catch((error) => {
+          console.log(error)
+        })}
+      
+      
+      },
   created () {
   this.loadUsers()
+  this.loadTransactions()
   
    
 }}

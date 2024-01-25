@@ -34,6 +34,11 @@ const routes = [
             name: 'Add User',
             component: () => import('@/views/pages/AddUser'),
           },
+          {
+            path: 'create-transaction',
+            name: 'Create Transaction',
+            component: () => import('@/views/pages/CreateTransaction'),
+          },
         ],
       },
     ],
@@ -57,6 +62,10 @@ const routes = [
         path: 'add-user',
         name: 'Add User',
         component: () => import('@/views/pages/AddUser'),
+      }, {
+        path: 'create-transaction',
+        name: 'Create Transaction',
+        component: () => import('@/views/pages/CreateTransaction'),
       },
     ],
   },

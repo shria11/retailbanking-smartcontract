@@ -74,10 +74,7 @@ modalValue:false,
       .post('http://localhost:8082/user/authenticate',params)
       .then((response) => {
           if (response.status == 200) {
-            //this.tableExample = response.data.map(x => x.username) 
-
-          // console.log(  this.tableExample)
-
+sessionStorage.setItem("user",this.form.username)
           this.$router.push({path: '/dashboard'})
           }
         })
