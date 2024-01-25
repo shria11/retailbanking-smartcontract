@@ -25,7 +25,7 @@ contract TransactionAuthorization {
     }
 
     // Function to authorize a transaction (can only be called by the authorized address)
-    function authorizeTransaction(uint256 _amount) public onlyAuthorized {
+    function authorizeTransaction(uint256 _amount) public onlyAuthorized payable{
         // Perform transaction logic here (e.g., transfer funds, execute some action)
         // For this example, let's emit an event to indicate that the transaction is authorized.
         emit TransactionAuthorized(msg.sender, _amount);

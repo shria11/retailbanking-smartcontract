@@ -1,5 +1,6 @@
 package com.mycompany.retailbanking.app;
 
+import com.mycompany.retailbanking.smartcontract.TransactionController;
 import com.mycompany.retailbanking.user.UserController;
 import static spark.Spark.before;
 import static spark.Spark.get;
@@ -62,8 +63,25 @@ public class Main {
             post("/authenticate", (req, res) -> {
                 return UserController.login(req, res);
             });
+
+        });
+        
+         path("/transaction", () ->
+        {
+     
+     
+            //list
+            get("/", (req, res) ->
+            {
+                return TransactionController.list(req, res);
+            });
             
-            post("/transaction",(req,res)->){return }
+            //add
+            post("/", (req, res) -> {
+                return TransactionController.add(req, res);
+            });
+            
+     
 
         });
         

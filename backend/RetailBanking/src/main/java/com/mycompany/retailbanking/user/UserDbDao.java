@@ -30,10 +30,9 @@ public class UserDbDao {
                 List<User> userList = new ArrayList<>();
                     while (rsList.next()) {
                         User user = new User();
-                        user.setId(rsList.getInt("id"));
                         user.setUsername(rsList.getString("username"));
-                        user.setPrivateKey(rsList.getString("private_key"));
-                        user.setPublicKey(rsList.getString("public_key"));
+                        user.setPrivateKey(rsList.getString("privateKey"));
+                        user.setPublicKey(rsList.getString("publicKey"));
                         user.setAddress(rsList.getString("address"));
                         userList.add(user);
                     }
@@ -51,24 +50,34 @@ public class UserDbDao {
      * @throws Exception
      */
     protected static boolean add(User user) throws DuplicateEntityException, Exception{
-         String sqlAdd = "INSERT INTO user(username, address, public_key, private_key, password, id) "
+         String sqlAdd = "INSERT INTO user(username, address, publicKey, privateKey, password) "
                 + "VALUES "
-                + "(?, ?,  ?, ?, SHA2(?,256), ?);";
+                + "(?, ?,  ?, ?, SHA2(?,256));";
+         
+             String sqlAdd1 = "INSERT INTO authorized_address(address) "
+                + "VALUES ('"
+                + "0x"+ user.getAddress()+"')";
 
         try (Connection conn = DbConnection.getCon();
-                PreparedStatement stmt1 = conn.prepareStatement(sqlAdd);) { 
+                PreparedStatement stmt1 = conn.prepareStatement(sqlAdd);
+                   PreparedStatement stmt2 = conn.prepareStatement(sqlAdd1);) { 
+            conn.setAutoCommit(false);
             stmt1.setString(1, user.getUsername());
-            stmt1.setString(2, user.getAddress());
+            stmt1.setString(2, "0x"+ user.getAddress());
              stmt1.setString(3, user.getPublicKey());
               stmt1.setString(4, user.getPrivateKey());
                stmt1.setString(5, user.getPassword());
-               stmt1.setInt(6, user.getId());
+              
                
                   int affectedRows =   stmt1.executeUpdate();
+                   int affectedRows1 =   stmt2.executeUpdate();
               
-                                            if (affectedRows > 0) {return true;}return false;
+                                            if (affectedRows > 0 && affectedRows1>0) {
+                                                conn.commit();
+                                                return true;}conn.rollback();return false;
             
         }catch(SQLException e){
+            
                 if (e.getErrorCode() == 1062) {
                 throw new DuplicateEntityException( "Username already exists");
             }
@@ -93,7 +102,6 @@ public class UserDbDao {
             try (ResultSet rsList = psList.executeQuery();) {
                 User  user = new User();
                 if (rsList.next()) {
-                  user.setId(rsList.getInt("id"));
                         user.setUsername(rsList.getString("username"));
                         user.setPrivateKey(rsList.getString("private_key"));
                         user.setPublicKey(rsList.getString("public_key"));
@@ -126,4 +134,5 @@ public class UserDbDao {
                    return false;}
             }}catch(Exception ex){throw new Exception(ex.getMessage());}
     }
+    
 }

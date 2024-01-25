@@ -5,20 +5,11 @@ package com.mycompany.retailbanking.user;
  * @author shria
  */
 public class User {
-    private int id;
     private String username;
     private String address;
     private String publicKey;
     private String privateKey;
     private String password;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public String getUsername() {
         return username;
@@ -62,7 +53,7 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" + "id=" + id + ", username=" + username + ", address=" + address + ", publicKey=" + publicKey + ", privateKey=" + privateKey + ", password=" + password + '}';
+        return "User{" + ", username=" + username + ", address=" + address + ", publicKey=" + publicKey + ", privateKey=" + privateKey + ", password=" + password + '}';
     }
        
 }

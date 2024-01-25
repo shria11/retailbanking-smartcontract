@@ -41,8 +41,8 @@ public class UserController {
                res.type("text/plain");
         User user = new User();
                 try {
-              user = new Gson().fromJson(req.body(), User.class);
-                    System.out.println(user.toString());
+              user = new Gson().fromJson(req.body(), User.class);                    
+                    user.setAddress(getAlphaNumericString(40));
         } catch (Exception ex) {
           
             res.status(422);
@@ -123,21 +123,31 @@ public class UserController {
             return "Error occured while login.";}
     }
     
-//    public static void main(String[] args) throws Exception {
-////        User user = new User();
-////        user.setUsername("yominesh"); 
-////        user.setAddress("test2");
-////         user.setPassword("Hello@123"); 
-////         user.setPrivateKey("test2");
-////         user.setPublicKey("test2");
-////         user.setId(2);
-////         
-////         System.out.println(UserDbDao.add(user));
-////        System.out.println( UserDbDao.view(1));
-////        
-////        System.out.println(UserDbDao.list());
-//
-//        System.out.println(UserDbDao.authenticate("shreeya","Hello@123"));
-//    }
-    
+    static String getAlphaNumericString(int n) 
+ { 
+ 
+  // choose a Character random from this String 
+  String AlphaNumericString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+         + "0123456789"
+         + "abcdefghijklmnopqrstuvxyz"; 
+ 
+  // create StringBuffer size of AlphaNumericString 
+  StringBuilder sb = new StringBuilder(n); 
+ 
+  for (int i = 0; i < n; i++) { 
+ 
+   // generate a random number between 
+   // 0 to AlphaNumericString variable length 
+   int index 
+    = (int)(AlphaNumericString.length() 
+      * Math.random()); 
+ 
+   // add Character one by one in end of sb 
+   sb.append(AlphaNumericString 
+      .charAt(index)); 
+  } 
+ 
+  return sb.toString(); 
+ } 
+       
 }
